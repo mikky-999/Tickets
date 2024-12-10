@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scan Ticket</title>
+</head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    video {
+      transform: none;         /* Standard syntax */
+      width: 100%;
+      height: 100%;
+    }
+
+    h1 {
+        margin: 20px 0;
+        font-size: 24px;
+    }
+    
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: transparent;
+        color: transparent;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:disabled {
+        background-color: transparent;
+        cursor: not-allowed;
+    }
+</style>
+<body>
+    <h1>Scan Your Ticket</h1>
+    
+
+    <form action="{% url 'validate_ticket' %}" method="post">
+        {% csrf_token %}
+        <video id="preview"></video>
+        <input type="hidden" id="ticket_code" name="code">
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script type="text/javascript">
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        scanner.addListener('scan', function (content) {
+            document.getElementById('ticket_code').value = content;
+            document.forms[0].submit();
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[1]).then(function(){
+                    document.getElementById('preview').style.transform = 'none'
+                });
+            } else {
+                console.error('No cameras found.');
+            }
+        }).catch(function (e) {
+            console.error(e);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scan Ticket</title>
+</head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    a{
+        text-decoration: none;
+        color: aliceblue;
+    }
+    h1 {
+        margin: 100px 0;
+        font-size: 120px;
+    }
+    p{
+        font-size: 50px;
+    }
+    button {
+            padding: 15px 30px;
+            font-size: 100px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 80px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+</style>
+<body>
+    <h1>Ticket Valid</h1>
+    <p>Ticket for {{ ticket.event.name }} is valid.</p>
+
+    <button><a href="{%url 'scans' %}">NEW SCAN</a></button>
+    
+</body>
+</html>
